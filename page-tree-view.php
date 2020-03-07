@@ -3,7 +3,7 @@
 
 
 function tree_view_page_enqueue_multiple() {
-	// wp_enqueue_script('create_qr_code_js', get_stylesheet_directory_uri() .'/assets/js/qrcodejs/qrcode.js', array(), false, false);
+	wp_enqueue_script('tree_view_page_js', get_stylesheet_directory_uri() .'/js/tree-view.js', array(), false, false);
 
     wp_enqueue_style ( 'tree-view-style', get_stylesheet_directory_uri() . '/css/tree-view-style.css' );
 
@@ -212,7 +212,7 @@ if($work_order_number == ""){
                                         <li>
                                             <span class="tf-nc">
                                                 <h6>Film And Nest Assembly, Gen2, SA25</h6>
-                                                <p class="assembly_id">501280</p>
+                                                <p class="assembly_id">021710</p>
                                             </span>
                                         </li>
                                         <li>
@@ -584,9 +584,7 @@ if($work_order_number == ""){
     jQuery(document).ready(function () {
         // +++++++++++++++++++++
         jQuery('.assembly_id').each(function (i, obj) {
-            var objtext = obj;
-            log(jQuery('.assembly_id')[i].innerText);
-            // console.log(objtext);
+            // log(jQuery('.assembly_id')[i].innerText);
         });
 
     }); // document ready end

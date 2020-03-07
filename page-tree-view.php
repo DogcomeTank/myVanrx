@@ -1,5 +1,15 @@
 <?php
-/* Template Name: Work Order */ 
+/* Template Name: Page - Tree View */ 
+
+
+function tree_view_page_enqueue_multiple() {
+	// wp_enqueue_script('create_qr_code_js', get_stylesheet_directory_uri() .'/assets/js/qrcodejs/qrcode.js', array(), false, false);
+
+    wp_enqueue_style ( 'tree-view-style', get_stylesheet_directory_uri() . '/css/tree-view-style.css' );
+
+}
+add_action( 'wp_enqueue_scripts', 'tree_view_page_enqueue_multiple' );
+
 get_header();
 
 if ( !is_user_logged_in()) 
@@ -22,38 +32,6 @@ if($work_order_number == ""){
 ?>
 
 
-<div style="display: none;" id="msg-box" class="w3-panel w3-pale-green w3-bottombar w3-border-green w3-border">
-    <p id="clockInMessage"></p>
-</div>
-<div class="w3-container clock-in-to-last-work-order-btn w3-margin-bottom"><button
-        class="w3-btn w3-white w3-border w3-border-green w3-round-xlarge" id="clock-in-to-last-work">Clock In To Last
-        Work Order</button></div>
-
-<div class="" style="margin:auto;">
-    <table id="example" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Work Order</th>
-                <th>Product</th>
-                <th>Name</th>
-                <th>SYS Number</th>
-            </tr>
-        </thead>
-        <tfoot>
-            <tr>
-                <th>ID</th>
-                <th>Work Order</th>
-                <th>Product</th>
-                <th>Name</th>
-                <th>SYS Number</th>
-            </tr>
-        </tfoot>
-    </table>
-</div>
-
-
-<!-- The Modal -->
 
 
 <div id="loading-modal" class="w3-modal">
@@ -94,64 +72,41 @@ if($work_order_number == ""){
 </div>
 
 
-
-<!-- when work order click -->
-<div id="work-order-modal" class="w3-modal">
-    <div class="w3-modal-content">
-        <div class="w3-container w3-padding">
-            <span onclick="displayMenu()" class="w3-button w3-display-topright">&times;</span>
-
-            <!-- form -->
-            <h2 class="w3-padding">Work Order: <span id="workNumDisplay"></span></h2>
-            <input style="display: none;" class="w3-input" id="work-order-input" name="work-order-input" type="text">
-
-            <div class="w3-card-4 w3-margin-bottom w3-padding">
-                <h6>Type Of Work</h6>
-                <div id="typeOfWorkList" class="w3-margin-top w3-margin-bottom"></div>
-                <h6>Exta Work Type</h6>
-                <div id="extraWorkTypeList" class="w3-margin-top w3-margin-bottom"></div>
-                <button id="clock-in-btn"
-                    class="w3-btn w3-white w3-border w3-border-green w3-round-xlarge w3-margin-bottom w3-margin-right">Clock
-                    In</button>
-            </div>
-
-            <div class="w3-card-4 w3-margin-bottom w3-padding">
-                <h6>Useful Links</h6>
-
-                <a id="work-information-link" href="/scan-qr-code-work-order/"><button id="work-order-history-btn"
-                        class="w3-btn w3-white w3-border w3-border-green w3-round-xlarge w3-margin-bottom w3-margin-right">Work
-                        Order Details</button></a>
-                <a id="BOMPageUrl" href="/work-orders/page-upload-check-bom/"><button id="shortage-list-btn"
-                        class="w3-btn w3-white w3-border w3-border-green w3-round-xlarge w3-margin-bottom w3-margin-right">BOM</button></a>
-                <a id="fulfillShortagePageUrl" href="/work-orders/page-fulfill-shortage/"><button id="shortage-list-btn"
-                        class="w3-btn w3-white w3-border w3-border-green w3-round-xlarge w3-margin-bottom w3-margin-right">Fulfill
-                        Shortage</button></a>
-                <button id="task-btn"
-                    class="w3-btn w3-white w3-border w3-border-green w3-round-xlarge w3-margin-bottom w3-margin-right">Tasks</button>
-            </div>
-
-            <div class="w3-row">
-                <div class="w3-col s12 m6">
-                    <div class="w3-card-4 w3-padding w3-margin-bottom">
-                        <h3 class="w3-margin-top w3-margin-bottom">Clock in Users</h3>
-                        <div id="clock-in-users" class="w3-margin-top w3-margin-bottom">
-                        </div>
-                    </div>
-                </div>
-                <div class="w3-col s12 m6">
-                    <div class="w3-card-4 w3-padding w3-margin-bottom">
-                        <h3 class="w3-margin-top w3-margin-bottom">Bin Location</h3>
-                        <div id="bin-location" class="w3-margin-top w3-margin-bottom">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+<!-- Tree View Div -->
+<div class="tf-tree example">
+  <ul>
+    <li>
+      <span class="tf-nc">1</span>
+      <ul>
+        <li>
+          <span class="tf-nc">2</span>
+          <ul>
+            <li><span class="tf-nc">4</span></li>
+            <li>
+              <span class="tf-nc">
+                  <p>Fan Assy</p>
+                  <p>60031</p>
+              </span>
+              <ul>
+                <li><span class="tf-nc">9</span></li>
+                <li><span class="tf-nc">10</span></li>
+              </ul>
+            </li>
+            <li><span class="tf-nc">6</span></li>
+          </ul>
+        </li>
+        <li>
+          <span class="tf-nc">3</span>
+          <ul>
+            <li><span class="tf-nc">7</span></li>
+            <li><span class="tf-nc">8</span></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
 </div>
-<!-- end when work order click -->
+<!-- End Tree View Div -->
 
 
 

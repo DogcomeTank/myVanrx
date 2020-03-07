@@ -75,8 +75,39 @@ switch ($the_action) {
     case "extraWorkTypeList":
         extraWorkTypeList();
         break;
-        
-    
+    case "insertAssembly":
+        insertAssembly();
+        break;
+}
+
+function insertAssembly(){
+    global $wpdb;
+    $sql_get_assembly_id = "
+        SELECT assembly_id
+        FROM `work_order`
+    ";
+    $total_assembly_insert = 0;
+    $result = $wpdb->get_results($sql_get_assembly_id, 'ARRAY_A');
+
+    foreach ($result as $key) {
+        // print_r ($key['assembly_id'] );
+        $assmbly_num = $key['assembly_id'];
+        $sql_get_assembly_list_by_num = "
+            SELECT *
+            FROM `assembly_list`
+            WHERE assembly_number = ".$assmbly_num."
+        ";
+        $if_assembly = $wpdb->get_results($sql_get_assembly_list_by_num);
+        if(count($if_assembly) == 0){
+            $sql_insert_assembly['assembly_number'] = $assmbly_num;
+            $sql_insert_assembly['estimate_time'] = '3600';
+            $res2 = $wpdb->insert('assembly_list', $sql_insert_assembly);
+            $total_assembly_insert++;
+        }
+    }
+
+    echo $total_assembly_insert;
+
 }
 
 function extraWorkTypeList(){
@@ -276,13 +307,6 @@ function getShortageList($wn){
 // Clock in/out
 function userClockInAndOut($wo_id, $user_id, $work_type = 1, $extra_wt = null){
 
-
-// ++++++++++++++++++++++++++++++++++
-// ++++++++++++++++++++++++++++++++++
-// ++++++++++++++++++++++++++++++++++
-// ++++++++++++++++++++++++++++++++++
-// ++++++++++++++++++++++++++++++++++
-
     if(!if_work_order_exist($wo_id)){
         exit("Work Order Not Found: " . $wo_id);
     }
@@ -367,12 +391,6 @@ function userClockInAndOut($wo_id, $user_id, $work_type = 1, $extra_wt = null){
             echo "Time cannot be negetive.";
         }
 
-
-// ++++++++++++++++++++++++++++++++++
-// ++++++++++++++++++++++++++++++++++
-// ++++++++++++++++++++++++++++++++++
-// ++++++++++++++++++++++++++++++++++
-// ++++++++++++++++++++++++++++++++++
         
     }
 

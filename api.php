@@ -126,8 +126,7 @@ function getTaskList(){
     $sql_get_tasks = "
         SELECT *
         FROM `vanrx_tasks`
-        WHERE `start` > '".$last_month."' 
-        AND status = 0
+        WHERE status = 0
     ";
     $result = $wpdb->get_results($sql_get_tasks);
     print json_encode($result);

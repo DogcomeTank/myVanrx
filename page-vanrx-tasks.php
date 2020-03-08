@@ -37,8 +37,8 @@ if ( !is_user_logged_in())
             <input class="w3-input" name="title" type="text" required>
             <label>Description (Optional)</label>
             <input class="w3-input" name="description" type="text">
-            <label>Start Date</label>
-            <input class="w3-input" name="start" type="datetime-local" required>
+            <label>Start Date (Optional)</label>
+            <input class="w3-input" name="start" type="datetime-local">
             <label>End Date (Optional)</label>
             <input class="w3-input" name="end" type="datetime-local"></br>
             <label for="urgency">Urgency</label>
@@ -77,6 +77,7 @@ var log = console.log;
 
         postData(ajax_url, data)
             .then((data) => {
+                log(data);
                 jQuery("<h3>Task Added.</h3>").appendTo("#newTaskAdded");
             });
     });

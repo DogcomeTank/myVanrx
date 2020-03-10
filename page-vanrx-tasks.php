@@ -38,9 +38,9 @@ if ( !is_user_logged_in())
             <label>Description (Optional)</label>
             <input class="w3-input" name="description" type="text">
             <label>Start Date (Optional)</label>
-            <input class="w3-input" name="start" type="datetime-local">
+            <input class="w3-input" name="start" type="date">
             <label>End Date (Optional)</label>
-            <input class="w3-input" name="end" type="datetime-local"></br>
+            <input class="w3-input" name="end" type="date"></br>
             <label for="urgency">Urgency</label>
             <select class="w3-input" id="urgency" name="urgency">
                 <option value="1">Normal</option>

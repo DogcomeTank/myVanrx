@@ -21,6 +21,7 @@ $workType = sanitize_text_field($_GET['workType']);
 $system_num = sanitize_text_field($_GET['sysNum']);
 $newBinLocation = sanitize_text_field($_GET['newLocation']);
 $extra_work_type = sanitize_text_field($_GET['extrawt']);
+$task_id = sanitize_text_field($_GET['taskID']);
 
 if($work_order_id == "" && !$work_order_number == ""){
     $work_order_id =  getWorkOrderIdByWorkNumber($work_order_number);
@@ -78,6 +79,30 @@ switch ($the_action) {
     case "insertAssembly":
         insertAssembly();
         break;
+    case "getTaskInfoByTaskId":
+        getTaskInfoByTaskId($task_id);
+        break;
+    case "closeTaskById":
+        closeTaskById($task_id);
+    break;
+}
+
+function getTaskInfoByTaskId($tid){
+    global $wpdb;
+    $sql_get_task_info = "
+        SELECT *
+        FROM `vanrx_tasks`
+        WHERE id = ".$tid."
+    ";
+    $task_info = $wpdb->get_results($sql_get_task_info);
+    print json_encode($task_info);
+}
+
+function closeTaskById($tid){
+    global $wpdb;
+    $where = ['id'=>$tid];
+    $closeTaskResult = $wpdb->update('vanrx_tasks', array("status"=> 1 ), $where);
+    print json_encode($closeTaskResult);
 }
 
 function insertAssembly(){

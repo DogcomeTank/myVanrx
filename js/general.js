@@ -37,6 +37,7 @@ function checkIfUserClockIn() {
 } //end
 
 
+
 function isClockin() {
     var data;
     jQuery.ajax({

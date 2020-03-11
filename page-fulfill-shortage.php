@@ -141,7 +141,7 @@ if($work_order_number == ""){
             jQuery('#emailSendSuccessMSG').text("Email Send to: " + da.TechList);
             displayShortage();
         }).fail(function (e) {
-            console.log("error: " + e);
+            alert("error: " + e);
         });;
     }
 

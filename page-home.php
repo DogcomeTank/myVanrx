@@ -110,7 +110,8 @@ if ( !is_user_logged_in())
                         <option value="3">Important</option>
                     </select></br></p>
                 <p>
-                    <button id="taskUpdateBtn" class="w3-btn w3-margin w3-white w3-border w3-border-green w3-round-xlarge">Update</button>
+                    <button id="taskUpdateBtn"
+                        class="w3-btn w3-margin w3-white w3-border w3-border-green w3-round-xlarge">Update</button>
                 </p>
             </form>
         </div>
@@ -151,25 +152,60 @@ if ( !is_user_logged_in())
             }
 
             // count over due events
-
-            if (currentTime > eventDate) {
+            if(eventList[i].start != null){
+                if (currentTime > eventDate) {
                 overdueEvents++;
             }
+            }
+            
             // log(eventDate);
         }
 
         jQuery('#taskUpdateBtn').click(function (e) {
             e.preventDefault();
-            var taskDataForm = jQuery("#updateTaskForm");
-            var jsonData = getFormData(taskDataForm);
-            log(jsonData);
+            let taskDataForm = jQuery("#updateTaskForm");
+            let jsonData = getFormData(taskDataForm);
+            let taskId = jQuery('#taskIDInModal').text();
+            var data = {
+                taskData: jsonData,
+                taskId: taskId,
+                action: "task_update",
+            };
+            log(data);
+            ajaxUpdateTask(data);
+            // log(jsonData);
 
+        });
+
+        jQuery('#closeTaskBtn').click(function (e) {
+            e.preventDefault();
+            let taskToClose = jQuery('#taskIDInModal').text();
+            closeTaskById(taskToClose);
         });
 
         jQuery('#totalEventInCalender').empty().text(totalScheduleEvent);
 
         jQuery('#overdueEvents').empty().text(overdueEvents);
 
+        function ajaxUpdateTask(postData) {
+            var ajax_url = "<?= admin_url('admin-ajax.php'); ?>";
+
+            // var data = {
+            //     sysNum: sysNum,
+            //     DirWorkTypeArr: DirWorkTypeArr,
+            //     InDirWorkTypeArrJson: InDirWorkTypeArrJson,
+            //     action: "work_order_time_sum",
+            // };
+            jQuery.ajax({
+                url: ajax_url,
+                type: "POST",
+                data: postData
+            }).done(function (da) {
+                log(da);
+            }).fail(function (e) {
+                alert("error: " + e);
+            });;
+        }
         var calendar = new FullCalendar.Calendar(calendarEl, {
             plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
             header: {
@@ -206,15 +242,15 @@ if ( !is_user_logged_in())
             jQuery('#work_order_id').val(da[0].work_order_id);
             jQuery('#title').val(da[0].title);
             jQuery('#description').val(da[0].description);
-            
-            if(da[0].start !== null){
-                let startDate =Date(da[0].start);
+
+            if (da[0].start !== null) {
+                let startDate = Date(da[0].start);
                 startDate = formatDate(startDate);
                 jQuery('#start').val(startDate);
             }
-            
-            if(da[0].end !== null){
-                let endDate =Date(da[0].end);
+
+            if (da[0].end !== null) {
+                let endDate = Date(da[0].end);
                 endDate = formatDate(endDate);
                 jQuery('#end').val(endDate);
             }
@@ -262,12 +298,16 @@ if ( !is_user_logged_in())
     }
 
     function closeTaskById(id) {
+        if (confirm('Do you want to close task?')) {
+            jQuery.ajax({
+                url: "/api/?action=closeTaskById&taskID=" + id,
+            }).done(function (da) {
+                location.reload();
+            }); // End ajax
+        } else {
+            return false;
+        }
 
-        jQuery.ajax({
-            url: "/api/?action=closeTaskById&taskID=" + id,
-        }).done(function (da) {
-            log(da);
-        }); // End ajax
     }
 
     function displayTaskOnLeftPanel(data) {
@@ -281,8 +321,6 @@ if ( !is_user_logged_in())
                         <button value="${data[i].id}" class="w3-small w3-white w3-border w3-border-blue w3-round"  onclick="leftTaskListClickEvent(jQuery(this).val())">${data[i].title}</button></li>
                 `;
             }
-            // log(data[i]);
-            // if(data[i].start)
 
         }
         jQuery('.taskUL').append(taskList);

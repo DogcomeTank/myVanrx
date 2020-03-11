@@ -83,7 +83,7 @@ switch ($the_action) {
         getTaskInfoByTaskId($task_id);
         break;
     case "closeTaskById":
-        closeTaskById($task_id);
+        closeTaskById($task_id, $login_user_id);
     break;
 }
 
@@ -98,10 +98,10 @@ function getTaskInfoByTaskId($tid){
     print json_encode($task_info);
 }
 
-function closeTaskById($tid){
+function closeTaskById($tid, $user_id){
     global $wpdb;
     $where = ['id'=>$tid];
-    $closeTaskResult = $wpdb->update('vanrx_tasks', array("status"=> 1 ), $where);
+    $closeTaskResult = $wpdb->update('vanrx_tasks', array("status"=> 1, "wp_users_id" => $user_id), $where);
     print json_encode($closeTaskResult);
 }
 

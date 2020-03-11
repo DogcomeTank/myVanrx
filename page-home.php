@@ -34,6 +34,9 @@ if ( !is_user_logged_in())
     <a style="color:white;" href="/add-task/"><button class="w3-btn w3-round-xxlarge w3-green">Tasks</button></a>
     <a style="color:white;" href="/qr-code"><button class="w3-btn w3-round-xxlarge w3-green">Create QR Code</button></a>
     <a style="color:white;" href="/page-report"><button class="w3-btn w3-round-xxlarge w3-green">Reports</button></a>
+    <a style="color:white;" href="/sa25-build-tree/"><button class="w3-btn w3-round-xxlarge w3-green">SA25 Build Tree</button></a>
+
+    
 </div>
 
 <div class="spacer-28px"></div>
@@ -171,8 +174,8 @@ if ( !is_user_logged_in())
                 taskId: taskId,
                 action: "task_update",
             };
-            log(data);
             ajaxUpdateTask(data);
+            
             // log(jsonData);
 
         });
@@ -190,28 +193,23 @@ if ( !is_user_logged_in())
         function ajaxUpdateTask(postData) {
             var ajax_url = "<?= admin_url('admin-ajax.php'); ?>";
 
-            // var data = {
-            //     sysNum: sysNum,
-            //     DirWorkTypeArr: DirWorkTypeArr,
-            //     InDirWorkTypeArrJson: InDirWorkTypeArrJson,
-            //     action: "work_order_time_sum",
-            // };
             jQuery.ajax({
                 url: ajax_url,
                 type: "POST",
                 data: postData
             }).done(function (da) {
-                log(da);
+                location.reload();
             }).fail(function (e) {
                 alert("error: " + e);
             });;
         }
         var calendar = new FullCalendar.Calendar(calendarEl, {
+            // plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
             plugins: ['interaction', 'dayGrid', 'timeGrid', 'list'],
             header: {
                 left: 'prev,next today',
                 center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                right: 'dayGridMonth,listMonth'
             },
             events: eventList,
             defaultDate: currentTime,
@@ -242,17 +240,22 @@ if ( !is_user_logged_in())
             jQuery('#work_order_id').val(da[0].work_order_id);
             jQuery('#title').val(da[0].title);
             jQuery('#description').val(da[0].description);
-
+            log(da[0].start);
             if (da[0].start !== null) {
-                let startDate = Date(da[0].start);
+                let startDate = new Date(da[0].start);
                 startDate = formatDate(startDate);
                 jQuery('#start').val(startDate);
+            }else{
+                jQuery('#start').val(0);
+                
             }
 
             if (da[0].end !== null) {
-                let endDate = Date(da[0].end);
+                let endDate = new Date(da[0].end);
                 endDate = formatDate(endDate);
                 jQuery('#end').val(endDate);
+            }else{
+                jQuery('#end').val(0);
             }
 
             jQuery('#urgency').val(da[0].urgency);
@@ -264,8 +267,7 @@ if ( !is_user_logged_in())
         });
     }
 
-    function leftTaskListClickEvent(id) {
-        // document.getElementById('eventClickModal').style.display = 'block';
+    function leftTaskListClickEvent(id) { 
         showTaskInfoInModal(id);
     }
 

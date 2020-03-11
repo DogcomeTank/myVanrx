@@ -19,7 +19,8 @@ $work_order_id = $_GET['woid'];
 ?>
 
 
-<div class="w3-row">
+<div class="w3-row w3-card-4 w3-margin">
+    <h3 class="w3-center w3-padding-top">Work Order QR Code</h3>
 
     <div class="w3-third">
         <form class="w3-container w3-margin w3-padding qr-form w3-card-4">
@@ -36,32 +37,62 @@ $work_order_id = $_GET['woid'];
     </div>
 
 
+
     <div class="w3-container w3-twothird w3-padding">
-        <div id="qr-code-div" class="w3-padding">
+        <div id="qr-code-div" style="padding: 18px;">
 
-
-             <div  style="float: left; clear: right;">
+            <div style="float: left; clear: both;">
                 <div id="qrcode"></div>
             </div>
 
-            <div style="width: 40%; float: left;" class="w3-padding">
+            <div style="width: 40%; float: left; padding: 28px;">
                 <h6>Work Order ID</h6>
                 <h4 id="displayID">1</h4>
                 <h6>Name:</h6>
                 <h4 id="displayName" class="text-center">NA</h4>
             </div>
-
-
-
-
+        </br>
         </div>
     </div>
+</div>
 
+<div class="w3-row w3-card-4 w3-margin">
+<h3 class="w3-center w3-padding-top">Kanban QR Code</h3>
+
+    <div class="w3-third">
+        <form class="qr-kanban-form w3-container w3-margin w3-padding w3-card-4">
+
+            <label>Title</label>
+            <input id="work-id" class="w3-input" type="text" value="Kanban-50011" required>
+
+            <label>Description</label>
+            <input id="work-label" class="w3-input" type="text" required>
+
+            <button class="submit-btn w3-btn w3-padding w3-margin-top w3-green">Print QR Code</button>
+        </form>
+    </div>
+    <div class="w3-container w3-twothird w3-padding">
+        <div id="qr-kanban-div" style="padding: 18px;">
+
+            <div style="float: left; clear: both;">
+                <div id="qrcode-kanban"></div>
+            </div>
+
+            <div style="width: 40%; float: left; padding: 28px;">
+                <h6>Item IPN</h6>
+                <h4 id="displayID">1</h4>
+                <h6>Description:</h6>
+                <h4 id="displayName" class="text-center">NA</h4>
+            </div>
+        </br>
+        </div>
+    </div>
 
 </div>
 
 <!-- Information storage -->
-<input id="text" type="text"  value="<?php echo esc_url( home_url( '/' ).'time-clock/?action=login&woid=2' ); ?>" style="width:80%; display:none;" disabled><br>
+<input id="text" type="text" value="<?php echo esc_url( home_url( '/' ).'time-clock/?action=login&woid=2' ); ?>"
+    style="width:80%; display:none;" disabled><br>
 
 
 

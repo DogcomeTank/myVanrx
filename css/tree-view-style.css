@@ -191,4 +191,8 @@ p {
 .work-done {
   background-color: #abedd8;
 }
+
+.site-content-contain {
+  max-width: 100% !important;
+}
 /*# sourceMappingURL=tree-view-style.css.map */

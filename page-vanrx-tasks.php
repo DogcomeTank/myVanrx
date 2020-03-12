@@ -23,14 +23,8 @@ if ( !is_user_logged_in())
 <div style="padding-bottom: 28px;">
     <div style="max-width: 600px; margin: auto;" id="newTaskAdded"></div>
     <div class="w3-card-4" style="max-width: 600px; margin: auto;">
-
-
-        <div class="w3-container w3-green">
-            <h2>Add New Task</h2>
-        </div>
-
         <form id="addNewTaskForm" class="w3-container">
-
+             <h2>Add New Task</h2>
             <label>Work Order Number (Optional)</label>
             <input class="w3-input" name="work_order_id" type="text">
             <label>Title</label>
@@ -47,17 +41,9 @@ if ( !is_user_logged_in())
                 <option value="2">Urgent</option>
                 <option value="3">Important</option>
             </select></br>
-
-
-
             <input type="submit" class="w3-botton">
-
-
         </form>
-
     </div>
-
-
 </div>
 
 
@@ -79,6 +65,8 @@ var log = console.log;
             .then((data) => {
                 log(data);
                 jQuery("<h3>Task Added.</h3>").appendTo("#newTaskAdded");
+                jQuery("#addNewTaskForm").css('display','none');
+                jQuery('<p class="w3-center"><a href="/add-task"><i class="fa fa-plus"></i> New Task</a></p>').appendTo("#newTaskAdded");
             });
     });
     async function postData(url = '', data = {}) {

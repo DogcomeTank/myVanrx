@@ -31,6 +31,14 @@ if ( !is_user_logged_in())
 
 ?>
 
+<div id="loadingModal" class="w3-modal">
+    <div class="w3-modal-content">
+        <div class="w3-container w3-padding">
+            <div class="loader w3-padding" style="margin:auto;"></div>
+        </div>
+    </div>
+</div>
+
 <div id="messageDiv" class="w3-panel w3-pale-green w3-leftbar w3-rightbar w3-border-green" style="display: none;">
     <h6 class="w3-center" id="message"></h6>
 </div>
@@ -245,6 +253,7 @@ if ( !is_user_logged_in())
     });
 
     function getKanbanInfoById(id) {
+        jQuery('#loadingModal').css('display','block');
         jQuery.ajax({
             url: '/api/?action=getKanbanInfoById&kanbanId=' + id,
             // async: true,
@@ -255,6 +264,7 @@ if ( !is_user_logged_in())
             jQuery('#titleInput').val(jsonDa[0].title);
             jQuery('#descriptionInput').val(jsonDa[0].description);
             var email = jQuery('#emailInput').val();
+            jQuery('#loadingModal').css('display','none');
         })
     }
 

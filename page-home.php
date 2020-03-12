@@ -27,40 +27,57 @@ if ( !is_user_logged_in())
 
 ?>
 
-<div class="w3-container w3-sand w3-padding w3-margin-bottom" id="home-useful-link">
-    <h2>Useful Link</h2>
-    <a style="color:white;" href="/work-orders/page-create-work-order/"><button
-            class="w3-btn w3-round-xxlarge w3-green">Upload Work Orders</button></a>
-    <a style="color:white;" href="/add-task/"><button class="w3-btn w3-round-xxlarge w3-green">Tasks</button></a>
-    <a style="color:white;" href="/qr-code"><button class="w3-btn w3-round-xxlarge w3-green">Create QR Code</button></a>
-    <a style="color:white;" href="/page-report"><button class="w3-btn w3-round-xxlarge w3-green">Reports</button></a>
-    <a style="color:white;" href="/sa25-build-tree/"><button class="w3-btn w3-round-xxlarge w3-green">SA25 Build Tree</button></a>
-    <a style="color:white;" href="/kanban/"><button class="w3-btn w3-round-xxlarge w3-green">Kanban</button></a>
 
-    
+<div class="w3-bar-item w3-button w3-margin" onclick="myAccFunc()">
+  Useful Links <i class="fa fa-caret-down"></i></div>
+<div class="w3-padding w3-margin-bottom w3-hide w3-white w3-card-4" id="usefulAcc">
+    <ul class="w3-ul">
+        <li>
+            <a href="/work-orders/page-create-work-order/">Upload Work Orders</a>
+        </li>
+        <li>
+            <a href="/qr-code">Create QR Code</a>
+        </li>
+        <li>
+            <a href="/page-report">Reports</a>
+        </li>
+        <li>
+            <a href="/sa25-build-tree">SA25 Build Tree</a>
+        </li>
+        <li>
+            <a href="/kanban">Kanban</a>
+        </li>
+    </ul>
+</div>
+
+<div class="w3-bar-item w3-button w3-margin" onclick="calendarAccFunc()">
+  Calendar Information <i class="fa fa-caret-down"></i></div>
+<div class="w3-padding w3-margin-bottom w3-hide w3-white w3-card-4" id="calendarAcc">
+    <ul class="w3-ul">
+        <li>
+            Total Scheduled Events: <span id="totalEventInCalender"></span>
+        </li>
+        <li>
+            Overdue Events: <span id="overdueEvents"></span>
+        </li>
+        <li>
+            Today's Events: <span id="todayEventInCalender"></span>
+        </li>
+
+    </ul>
 </div>
 
 <div class="spacer-28px"></div>
 
-<div class="w3-row-padding w3-section w3-stretch w3-margin">
-    <div class="w3-col s12 m3 w3-border w3-margin-bottom">
+<div class="w3-row-padding w3-section w3-stretch sl-margin-8">
+    <div class="w3-col s12 m3 w3-margin-bottom sl-remove-padding">
         <h4 class="w3-center">Tasks</h4>
+        <p class="w3-center"><a href="/add-task"><i class="fa fa-plus"></i> New Task</a></p>
         <ul class="w3-ul taskUL">
-            <li>
-                <button class="w3-small w3-white w3-border w3-border-blue w3-round">Small</button></li>
-            <li>
-                <button class="w3-small w3-white w3-border w3-border-blue w3-round">Small</button></li>
-            <li>
-                <button class="w3-small w3-white w3-border w3-border-blue w3-round">Small</button></li>
+
         </ul>
     </div>
-    <div class="w3-col s12 m9">
-        <div>
-            <h4>Total Scheduled Events: <span id="totalEventInCalender"></span></h4>
-        </div>
-        <div>
-            <h4>Overdue Events: <span id="overdueEvents"></span></h4>
-        </div>
+    <div class="w3-col s12 m9 sl-remove-padding">
         <div id='calendar'></div>
     </div>
 </div>
@@ -71,6 +88,37 @@ if ( !is_user_logged_in())
         <div class="w3-container w3-padding">
             <div class="loader w3-padding" style="margin:auto;"></div>
         </div>
+    </div>
+</div>
+
+<div id="addNewTaskModal" class="w3-modal">
+    <div style="max-width: 600px; margin: auto;" id="newTaskAdded"></div>
+    <div class="w3-modal-content w3-card-4" style="max-width: 600px; margin: auto;">
+        <header class="w3-container w3-green">
+            <span onclick="document.getElementById('eventClickModal').style.display='none'"
+                class="w3-button w3-display-topright">&times;</span>
+                <h2>Add New Task</h2>
+        </header>
+
+        <form id="addNewTaskForm" class="w3-container">
+            <label>Work Order Number (Optional)</label>
+            <input class="w3-input" name="work_order_id" type="text">
+            <label>Title</label>
+            <input class="w3-input" name="title" type="text" required>
+            <label>Description (Optional)</label>
+            <input class="w3-input" name="description" type="text">
+            <label>Start Date (Optional)</label>
+            <input class="w3-input" name="start" type="date">
+            <label>End Date (Optional)</label>
+            <input class="w3-input" name="end" type="date"></br>
+            <label for="urgency">Urgency</label>
+            <select class="w3-input" id="urgency" name="urgency">
+                <option value="1">Normal</option>
+                <option value="2">Urgent</option>
+                <option value="3">Important</option>
+            </select></br>
+            <input type="submit" class="w3-botton">
+        </form>
     </div>
 </div>
 
@@ -87,7 +135,7 @@ if ( !is_user_logged_in())
 
         <div class="w3-container taskInfoDiv">
             <h5>Task ID: <span id="taskIDInModal"></span><button
-                    class="w3-btn w3-margin w3-white w3-border w3-border-red w3-round-xlarge" id="closeTaskBtn">Close
+                    class="w3-btn w3-white w3-border w3-border-red w3-round-xlarge" id="closeTaskBtn">Close
                     Task</button></h5>
             <p>Created at: <span id="task_created_date"></span></p>
             <form id="updateTaskForm" class="w3-margin">
@@ -129,11 +177,16 @@ if ( !is_user_logged_in())
     var log = console.log;
     document.addEventListener('DOMContentLoaded', function () {
         var currentTime = new Date();
+        currentTime.setHours(0);
+        currentTime.setMinutes(0);
+        currentTime.setSeconds(0, 0);
+        
         var calendarEl = document.getElementById('calendar');
         var eventList = getTask();
         var totalInEventList = eventList.length;
         var totalScheduleEvent = 0;
         var overdueEvents = 0;
+        var todayEvents = 0;
 
 
         displayTaskOnLeftPanel(eventList);
@@ -143,7 +196,15 @@ if ( !is_user_logged_in())
             var eventDate = new Date(eventList[i].start);
             // Total future schedule events
             if (eventList[i].start != null && currentTime < eventDate) {
-                totalScheduleEvent++;
+                if(currentTime.getFullYear() == eventDate.getFullYear() && currentTime.getMonth() == eventDate.getMonth() && currentTime.getDate() == eventDate.getDate() ){
+                }else{
+                    totalScheduleEvent++;
+                }
+                
+            }
+
+            if (eventList[i].start != null && currentTime.getFullYear() == eventDate.getFullYear() && currentTime.getMonth() == eventDate.getMonth() && currentTime.getDate() == eventDate.getDate() ) {
+                todayEvents++;
             }
 
             // Display color
@@ -156,10 +217,12 @@ if ( !is_user_logged_in())
             }
 
             // count over due events
-            if(eventList[i].start != null){
-                if (currentTime > eventDate) {
-                overdueEvents++;
-            }
+            if(eventList[i].start != null && currentTime > eventDate ){
+                if (currentTime.getFullYear() == eventDate.getFullYear() && currentTime.getMonth() == eventDate.getMonth() && currentTime.getDate() == eventDate.getDate()) {
+                    
+                }else{
+                    overdueEvents++;
+                }
             }
             
             // log(eventDate);
@@ -188,7 +251,7 @@ if ( !is_user_logged_in())
         });
 
         jQuery('#totalEventInCalender').empty().text(totalScheduleEvent);
-
+        jQuery('#todayEventInCalender').empty().text(todayEvents);
         jQuery('#overdueEvents').empty().text(overdueEvents);
 
         function ajaxUpdateTask(postData) {
@@ -215,7 +278,7 @@ if ( !is_user_logged_in())
             events: eventList,
             defaultDate: currentTime,
             navLinks: true, // can click day/week names to navigate views
-            businessHours: true, // display business hours
+            // businessHours: true, // display business hours
             editable: false,
             eventClick: function (info) {
                 showTaskInfoInModal(info.event.id);
@@ -228,7 +291,25 @@ if ( !is_user_logged_in())
 
     }); //Doc ready
 
-    // +++++++++continue here +++++++++++
+    
+    function myAccFunc() {
+        var x = document.getElementById("usefulAcc");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+        } else { 
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+
+    function calendarAccFunc() {
+        var x = document.getElementById("calendarAcc");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+        } else { 
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+    
     function showTaskInfoInModal(id) {
         apiURL = 'api/?action=getTaskInfoByTaskId&taskID=' + id;
         jQuery.ajax({

@@ -140,10 +140,12 @@ $shadow: #DBE3F4;
     border-radius: 50%;
   }
 
-#calendar{
-    margin:8px;
-    margin: auto;
-    max-width: 1200px;
+.sl-remove-padding{
+    padding: 0px !important;
+}
+
+.sl-margin-8{
+	margin: 8px !important;
 }
 
 #home-useful-link{

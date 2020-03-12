@@ -32,7 +32,7 @@ add_action( 'wp_enqueue_scripts', 'child_theme_configurator_css', 10 );
 
 
 function enqueue_multiple() {
-	wp_enqueue_script('create_qr_code_js', get_stylesheet_directory_uri() .'/assets/js/qrcodejs/qrcode.js', array(), false, false);
+	// wp_enqueue_script('create_qr_code_js', get_stylesheet_directory_uri() .'/assets/js/qrcodejs/qrcode.js', array(), false, false);
 	wp_enqueue_script('general_js', get_stylesheet_directory_uri() .'/js/general.js', array(), false, false);
     wp_enqueue_script ( 'datatables-script', get_stylesheet_directory_uri() . '/inc/DataTables/datatables.min.js' );
 	wp_enqueue_style ( 'datatables-style', get_stylesheet_directory_uri() . '/inc/DataTables/datatables.min.css' );

@@ -35,6 +35,7 @@ if ( !is_user_logged_in())
     <a style="color:white;" href="/qr-code"><button class="w3-btn w3-round-xxlarge w3-green">Create QR Code</button></a>
     <a style="color:white;" href="/page-report"><button class="w3-btn w3-round-xxlarge w3-green">Reports</button></a>
     <a style="color:white;" href="/sa25-build-tree/"><button class="w3-btn w3-round-xxlarge w3-green">SA25 Build Tree</button></a>
+    <a style="color:white;" href="/kanban/"><button class="w3-btn w3-round-xxlarge w3-green">Kanban</button></a>
 
     
 </div>

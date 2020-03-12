@@ -11,7 +11,7 @@ if(!is_user_logged_in()){
 
 // link check http://vanrxproduction.local/api/?action=userClockInAndOut&wonum=WO-000786
 
-$the_action = $work_order_id = $work_type_id =$work_order_list = $bin_location = $workType =  $system_num = "";
+$the_action = $work_order_id = $work_type_id =$work_order_list = $bin_location = $workType =  $system_num = $kanban_id = "";
 
 $the_action = sanitize_text_field($_GET['action']);
 $work_order_id = sanitize_text_field($_GET['woid']);
@@ -22,6 +22,7 @@ $system_num = sanitize_text_field($_GET['sysNum']);
 $newBinLocation = sanitize_text_field($_GET['newLocation']);
 $extra_work_type = sanitize_text_field($_GET['extrawt']);
 $task_id = sanitize_text_field($_GET['taskID']);
+$kanban_id = sanitize_text_field($_GET['kanbanId']);
 
 if($work_order_id == "" && !$work_order_number == ""){
     $work_order_id =  getWorkOrderIdByWorkNumber($work_order_number);
@@ -85,6 +86,43 @@ switch ($the_action) {
     case "closeTaskById":
         closeTaskById($task_id, $login_user_id);
     break;
+    case "getKanbanList":
+        getKanbanList();
+    break;
+    case "getKanbanInfoById":
+        getKanbanInfoById($kanban_id);
+    break;
+}
+
+function getKanbanInfoById($id){
+    global $wpdb;
+    $sql_get_kanban_item_by_id = "
+        SELECT *
+        FROM `vanrx_kanban`
+        WHERE id = ".$id.";
+    ";
+    $kanban_info = $wpdb->get_results($sql_get_kanban_item_by_id);
+    print json_encode($kanban_info);
+}
+
+function getKanbanList(){
+    global $wpdb;
+    $sql_get_kanban_list = "
+        SELECT *
+        FROM `vanrx_kanban`
+        LIMIT 500;
+    ";
+    $datatable_columns = array(
+        array( 'db' => 'id', 'dt' => 0 ),
+        array( 'db' => 'ipn', 'dt' => 1 ),
+        array( 'db' => 'title', 'dt' => 2 ),
+        array( 'db' => 'description',  'dt' => 3 )
+    );
+
+    $result = datatables_data_output($datatable_columns, $sql_get_kanban_list);
+
+    print json_encode($result);
+
 }
 
 function getTaskInfoByTaskId($tid){

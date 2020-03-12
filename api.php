@@ -92,7 +92,41 @@ switch ($the_action) {
     case "getKanbanInfoById":
         getKanbanInfoById($kanban_id);
     break;
+    // case "sendWarehouseEmail":
+    //     sendWarehouseEmail($kanban_id);
+    // break;
 }
+
+// function sendWarehouseEmail($id){
+//     global $wpdb;
+//     $sql_get_kanban_item_by_id = "
+//         SELECT *
+//         FROM `vanrx_kanban`
+//         WHERE id = ".$id.";
+//     ";
+//     $kanban_info = $wpdb->get_results($sql_get_kanban_item_by_id);
+
+
+//     if($kanban_info){
+//         $to = $email;
+//         $subject = $title;
+//         $body = '
+//             <p>'.$description.'</p>
+//         ';
+//         // $headers = array('Content-Type: text/html; charset=UTF-8');
+//         $headers[] = 'Content-Type: text/html; charset=UTF-8';
+//         $headers[] = 'Cc: dogcometank@gmail.com';
+    
+//         $mailResult = wp_mail( $to, $subject, $body, $headers );
+    
+//         print json_encode($mailResult);
+//         wp_die(); 
+//     }else{
+//         print json_encode('Error sending email.');
+//     }
+
+
+// }
 
 function getKanbanInfoById($id){
     global $wpdb;

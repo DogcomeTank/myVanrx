@@ -64,9 +64,14 @@ if ( !is_user_logged_in())
 <div id="id01" class="w3-modal">
   <div class="w3-modal-content">
     <div class="w3-container">
-      <span onclick="document.getElementById('id01').style.display='none'"
-      class="w3-button w3-display-topright">&times;</span>
-      <div id="kanbanQRDiv"></div>
+        <span onclick="document.getElementById('id01').style.display='none'"
+        class="w3-button w3-display-topright">&times;</span>
+        <div id="kanbanQRCodePrint">
+            <div style="margin:auto; width:auto;" id="kanbanQRDiv"></div>
+            <h5 style="margin: auto;">ID: <span id="qrDisplayIPN"></span></h5>
+            <p style="margin: auto;" id="qrDisplayTitle"></p>
+        </div>
+        <button id="printKanbanQRbtn">Print</button>
     </div>
   </div>
 </div>
@@ -136,8 +141,9 @@ if ( !is_user_logged_in())
     var qrcode = new QRCode(document.getElementById("kanbanQRDiv"), {});
     jQuery(document).ready(function () {
 
-
+        <?php if($kanban_id !== ""){ ?>
         getKanbanInfoById(<?php echo $kanban_id; ?>);
+        <?php } ?>
 
         jQuery('#titleInput').val("<?php echo $title; ?>");
         jQuery('#descriptionInput').val("<?php echo $description; ?>");
@@ -178,41 +184,40 @@ if ( !is_user_logged_in())
 
         jQuery('#createQRcode').click(function (e) {
             e.preventDefault();
-            var linkForQR = "<?php echo esc_url( home_url( '/' )); ?>scan-qr-code-work-order/?wonum=";
-            document.getElementById('id01').style.display='block';
-            qrcode.makeCode(linkForQR)
+            var kanbanId = jQuery('#kanbanIdInput').val();
+            if(kanbanId !== ''){
+                var linkForQR = "<?php echo esc_url( home_url( '/' )); ?>kanban/?kanbanId="+kanbanId;
+                var ipn = jQuery('#ipnInput').val();
+                var title = jQuery('#titleInput').val();
+                document.getElementById('id01').style.display='block';
+                qrcode.makeCode(linkForQR)
+                jQuery('#qrDisplayIPN').text(ipn);
+                jQuery('#qrDisplayTitle').text(title);
+            }else{
+                alert("please Select Item ID.");
+            }
+            
+        });
 
+        jQuery("#printKanbanQRbtn").click(function(e){
+            e.preventDefault();
+            printKanbanQRDiv();
 
         });
 
-        function printKanbanQR() {
-
-            // var QrWorkId = document.getElementById("work-id");
-            // var QrWorkName = document.getElementById("work-label");
-            var linkForQR = "<?php echo esc_url( home_url( '/' )); ?>scan-qr-code-work-order/?wonum=";
-
-            // if (!QrWorkId.value) {
-            //     QrWorkId.focus();
-            //     return;
-            // }
-            // var workID = jQuery("#work-id").val().trim().split(" ").join("");
-            // linkForQR = linkForQR + workID;
-
-            qrcode.makeCode(linkForQR);
-        }
-
-
-        // +++++++++++++++++
-
         jQuery('#emailFormBtn').click(function (e) {
             e.preventDefault();
+            var id = jQuery('#kanbanIdInput').val();
             var title = jQuery('#titleInput').val();
+            var ipn = jQuery('#ipnInput').val();
             var description = jQuery('#descriptionInput').val();
             var email = jQuery('#emailInput').val();
 
             var ajax_url = "<?= admin_url('admin-ajax.php'); ?>";
             var data = {
+                id: id,
                 title: title,
+                ipn: ipn,
                 description: description,
                 email: email,
                 action: "kanban_email",
@@ -222,16 +227,20 @@ if ( !is_user_logged_in())
                 type: "POST",
                 data: data,
             }).done(function (da) {
+                log(da);
                 if (da) {
                     jQuery('#message').text('Email Sent.')
                     jQuery('#titleInput').val("");
                     jQuery('#descriptionInput').val("");
                     jQuery('#emailInput').val("");
                     jQuery('#messageDiv').css('display', 'block');
+                    jQuery('html, body').animate({
+                        scrollTop: jQuery("#site-detail").offset().top
+                    }, 500);
                 }
             }).fail(function (e) {
                 alert("error: " + e);
-            });;
+            });
         });
     });
 
@@ -241,13 +250,22 @@ if ( !is_user_logged_in())
             // async: true,
         }).done(function (da) {
             var jsonDa = JSON.parse(da);
-            var title = jQuery('#kanbanIdInput').val(jsonDa[0].id);
-            var title = jQuery('#ipnInput').val(jsonDa[0].ipn);
-            var title = jQuery('#titleInput').val(jsonDa[0].title);
-            var description = jQuery('#descriptionInput').val(jsonDa[0].description);
+            jQuery('#kanbanIdInput').val(jsonDa[0].id);
+            jQuery('#ipnInput').val(jsonDa[0].ipn);
+            jQuery('#titleInput').val(jsonDa[0].title);
+            jQuery('#descriptionInput').val(jsonDa[0].description);
             var email = jQuery('#emailInput').val();
-            log(jsonDa);
         })
+    }
+
+    function printKanbanQRDiv() {
+        var prtContent = document.getElementById("kanbanQRCodePrint");
+        var WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+        WinPrint.document.write(prtContent.innerHTML);
+        WinPrint.document.close();
+        WinPrint.focus();
+        WinPrint.print();
+        WinPrint.close();
     }
 </script>
 

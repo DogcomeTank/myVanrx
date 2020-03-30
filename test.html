@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Sortable: `put: []` demo</title>
+
+  <!-- Sortable.js -->
+  <script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
+
+  <style>
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #eee;
+      margin: 1px;
+      padding: 5px 10px;
+    }
+
+    .sortable-ghost {
+      opacity: .6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <ul class="wo-ul" id="foo">
+    <li>foo 1</li>
+    <li>foo 2</li>
+    <li>foo 3</li>
+  </ul>
+
+  <ul class="wo-ul" id="bar">
+    <li>bar 1</li>
+    <li>bar 2</li>
+    <li>bar 3</li>
+  </ul>
+
+  <ul id="qux">
+    <li>bar 1</li>
+    <li>bar 2</li>
+    <li>bar 3</li>
+  </ul>
+
+  <input type="file" onchange=read(this)>
+  <div class="output"></div>
+  <script>
+    const reader = new FileReader()
+
+    function read(input) {
+      const csv = input.files[0]
+      reader.readAsText(csv)
+    }
+
+    reader.onload = function (e) {
+      console.log(e.target.result);
+    }
+  </script>
+
+
+  <script>
+    Sortable.create(foo, {
+      group: 'foo',
+      animation: 100
+    });
+
+    Sortable.create(bar, {
+      group: {
+        name: 'bar',
+        pull: true
+      },
+      animation: 100
+    });
+
+    Sortable.create(qux, {
+      group: {
+        name: 'qux',
+        put: ['foo', 'bar']
+      },
+      animation: 100
+    });
+  </script>
+</body>
+
+</html>

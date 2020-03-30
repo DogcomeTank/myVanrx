@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,KAAK,CAAA,AAAA,IAAC,CAAK,MAAM,AAAX,EAAa;EACf,MAAM,EAAE,IAAI;EACZ,KAAK,EAAE,IAAI;EACX,MAAM,EAAE,cAAc;EACtB,MAAM,EAAE,OAAO;CAClB;;AAED,AAAA,UAAU,CAAA;EACN,MAAM,EAAE,IAAI;EACZ,MAAM,EAAE,KAAK;CAChB",
+    "sources": [
+        "page-csv-compare.scss"
+    ],
+    "names": [],
+    "file": "page-csv-compare.css"
+}

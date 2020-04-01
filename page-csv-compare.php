@@ -15,86 +15,94 @@ get_header();
 
 
 <div id="dataInputDiv">
-    <!-- csv drop zone -->
-    <div style="display:none;" id="ErrorMsg"></div>
-    <div class="csvFileInput w3-margin w3-container">
-        <h4>Drag and Drop Your CSV File Here</h4>
-        <input class="fileInput" type="file" onchange=read(this)>
-        <div class="output"></div>
-    </div>
-    <!-- End csv drop zone -->
 
-    <div class="w3-container">
-        <h4 class="w3-padding">Past your data on the input area</h4>
-        <div class="csvInputDiv w3-padding">
-            <textarea id="csv" rows="18" spellcheck="false"></textarea>
-            <!-- select display column -->
-            <div class="displayColumnSelection">
-                <form id="displayColumnSelectionForm">
-                    <input id="milk1" class="w3-check" value="milk" type="checkbox" name="displayColumnCheckbox1">
-                    <label>Male</label></br>
-                    <input id="milk2" class="w3-check" value="milk2" type="checkbox" name="displayColumnCheckbox2">
-                    <label>Male</label></br>
-                    <input id="milk3" class="w3-check" value="milk3" type="checkbox" name="displayColumnCheckbox3">
-                    <label>Male</label></br>
-                </form>
-                
+    <div class="w3-panel w3-pale-red w3-leftbar w3-border w3-border-red" style="display:none;" id="ErrorMsg">
+    </div>
+    <div class="w3-row">
+        <div class="w3-col s6">
+            <!-- csv drop zone -->
+            <div class="w3-card-4 w3-margin w3-padding">
+                <h4>Drag and Drop Your CSV File Here</h4>
+                <input class="fileInput w3-margin-bottom" type="file" onchange=read(this)>
+                <div class="output"></div>
+                <!-- End csv drop zone -->
             </div>
-            <button class="w3-btn w3-white w3-border w3-border-green w3-round-xlarge" id="convert">Convert</button>
+        </div>
+        <div class="w3-col s6">
+            <div class="w3-card-4 w3-margin w3-padding">
+                <h4>Copy&Past From EXCEL</h4>
+                <textarea id="csv" rows="3" spellcheck="false"></textarea>
+            </div>
         </div>
     </div>
+    <!-- select display column -->
+    <div class="displayColumnSelection w3-margin">
+        <div class="w3-padding w3-card-4">
+            <h4>Select Display Column</h4>
+            <form id="displayColumnSelectionForm">
+            </form>
+        </div>
+    </div>
+    <!-- Select compare column -->
+    <div class="compareColumnSelection w3-margin">
+        <div class="w3-padding w3-card-4">
+            <h4>Select Column To Compare</h4>
+            <form id="compareColumnSelection">
+            </form>
+        </div>
+    </div>
+
+    <div class="w3-container btnDiv" style="display: none;">
+        <div class="csvInputDiv w3-padding-top">
+            <button class="w3-btn w3-white w3-border w3-border-green w3-round-xlarge" id="compareBtn">Compare</button>
+        </div>
+    </div>
+
+    <!-- Display CSV in Table -->
+    <div class="w3-container tableDisplayDiv w3-margin-top" style="overflow-x: scroll;">
+        <table class="w3-table-all w3-tiny" id='csvDisplayTable'>
+
+        </table>
+    </div>
 </div>
+
+<!-- Section 2 -->
 
 <div class="dataCompareDiv" id="dataCompareDiv" style="display: none;">
     <div class="w3-container" id="compareDiv">
         <div class="w3-row">
             <div class="w3-col s12 m4 w3-margin-top">
                 <div class="w3-card-4">
-                    <table class="w3-table-all w3-tiny">
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Points</th>
-                        </tr>
-                        <tr>
-                            <td>Jill</td>
-                            <td>Smith</td>
-                            <td>50</td>
-                        </tr>
-                        <tr>
-                            <td>Eve</td>
-                            <td>Jackson</td>
-                            <td>94</td>
-                        </tr>
-                        <tr>
-                            <td>Adam</td>
-                            <td>Johnson</td>
-                            <td>67</td>
-                        </tr>
+                    <table class="w3-table-all w3-tiny" id="leftPanelTable">
+
                     </table>
                 </div>
             </div>
 
-            <div class="w3-col s12 m4 w3-padding check-button-div">
+            <div class="w3-col s12 m4 w3-margin-top check-button-div">
 
-                <div class="w3-card-4 w3-padding">
-                    <h5 class="w3-padding">Total Item: <span id="dataLength"></span></h5>
+                <div class="w3-card-4 w3-margin-left w3-margin-right">
+                <div class="w3-padding">
+                    <h5>Total Item: <span id="dataLength"></span></h5>
                     <form id="checkData">
-                        <input type="text">
+                        <input id="compareInputData" type="text">
                         <button class="w3-btn w3-white w3-border w3-border-green w3-round-xlarge"
                             id="compare">Compare</button>
                     </form>
+                    </div>
                 </div>
             </div>
 
             <div class="w3-col s12 m4 w3-margin-top">
-                <div class="w3-card-4">Output Data</div>
+                <div class="w3-card-4">
+                <table class="w3-table-all w3-tiny" id="rightPanelTable">
+
+</table>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-
 
 
 

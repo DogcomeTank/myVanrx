@@ -18,50 +18,185 @@ reader.onload = function (e) {
     var saniData = csvData.replace(/"/g, "");
     jQuery('#csv').text(saniData);
     // Convert csv to obj when file drop into input zone
-    
+    tryToDisplayData(saniData);
 }
 
 function read(input) {
     const csv = input.files[0]
     reader.readAsText(csv)
-    try { // statements to try
-        jQuery('#ErrorMsg').css('display', 'none');
-        jsonOutput = convert(oInput);
-        log(jsonOutput);
-    } catch (e) {
-        jQuery('#ErrorMsg').css('display', 'block');
-        jQuery('#ErrorMsg').html(e);
-    }
 }
 // End CSV file input
 
 jQuery(document).ready(function ($) {
 
-    jQuery('#convert').click(function () {
-        
-        animateCSS('#dataInputDiv', 'rollOut', function () {
+    jQuery('#compareBtn').click(function () {
+// 1. check if selections selected
+        var ifSelected = checkIfSectionSelected();
+
+// 2. Display compare section
+        if (ifSelected) {
+            // show total item in csv
             jQuery('#dataInputDiv').css('display', 'none');
             jQuery('#dataCompareDiv').css('display', 'block');
-            animateCSS('.dataCompareDiv', 'rollIn', function () {
-                // get all the inputs from forms into an array.
-                var $inputs = $('#displayColumnSelectionForm :input');
-
-                var values = {};
-                $inputs.each(function() {
-                    values[this.name] = $(this).val();
-                });
-                
-                
-            });
             jQuery('#dataLength').text(jsonOutput.length);
-            log(jsonOutput);
-        });
+
+            displayDataLeftPanel(jsonOutput);
+
+
+        } else {
+            alert('Please Select Column.');
+        }
+
+        // log(jsonOutput);
+    });
+// 3. Compare function
+    jQuery('#checkData').on('submit', function(e){
+        e.preventDefault();
+        var v = jQuery('#compareInputData').val();
+        var tr = jQuery('#c-'+v).closest("tr").remove().clone();
+        jQuery('#rightPanelTable').append(tr);
+        jQuery('#compareInputData').select();
+    });
+
+    jQuery('#csv').change(function () {
+        var csvData = jQuery('#csv').val();
+        tryToDisplayData(csvData);
+    });
+
+    // Form On change
+    jQuery('#displayColumnSelectionForm').change(function () {
+        var d = '';
+        var formData = jQuery('#displayColumnSelectionForm').serializeArray();
+
+        // Select Column To Compare Div Input
+        jQuery('#compareColumnSelection').empty();
+        for (i = 0; i < formData.length; i++) {
+            d = d + `
+                <input id="cd-${i}" class="w3-radio" type="radio" name="columnToCompare" value="${formData[i]['value']}">
+                <label for="cd-${i}">${formData[i]['value']}</label>
+            `;
+        }
+        jQuery('#compareColumnSelection').append(d);
 
     });
 
-
 }); //End doc ready
 
+function displayDataLeftPanel(data) {
+    var displayColumn = jQuery('#displayColumnSelectionForm').serializeArray();
+    var compareColumn = jQuery('#compareColumnSelection').serializeArray();
+    // 1. display table Header
+    var tr = th = td = tdFinal = '';
+    var columnHeadL = displayColumn.length;
+    var dataL = data.length;
+    tr = '<tr>';
+    for (i = 0; i < columnHeadL; i++) {
+        th = th + `
+                <th>${displayColumn[i]['value']}</th>
+            `;
+    }
+    tr = tr + th + '</tr>';
+    jQuery('#leftPanelTable').append(tr);
+    jQuery('#rightPanelTable').append(tr);
+
+    // 2. Display Data in Table
+    for (x = 0; x < dataL; x++) {
+        td = '';
+        tr = '<tr id="compareColumn-'+x+'">';
+        for (n = 0; n < columnHeadL; n++) {
+            // Add id if td is the selected compare column
+            var c = compareColumn[0]['value'];
+            var keyValue = displayColumn[n]['value'];
+
+            if(c == keyValue){
+                td = td + `
+                <td id="c-${data[x][keyValue]}">${data[x][keyValue]}</td>
+            `;
+            }else{
+                td = td + `
+                <td>${data[x][keyValue]}</td>
+            `;
+            }
+        }
+        td = td + '';
+        tr = tr + td + '</tr>';
+
+        tdFinal = tdFinal + tr;
+    }
+    jQuery('#leftPanelTable').append(tdFinal);
+    jQuery('#compareInputData').select();
+}
+
+function checkIfSectionSelected() {
+    var formData = jQuery('#compareColumnSelection').serializeArray();
+    if (formData == '') {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function tryToDisplayData(data) {
+    try { // statements to try
+        jQuery('#ErrorMsg').css('display', 'none');
+        jsonOutput = convert(data);
+        displayHeaderSelection(jsonOutput);
+        displayCSVtoTable(jsonOutput);
+        jQuery('.btnDiv').css('display', 'block');
+    } catch (e) {
+        jQuery('#ErrorMsg').css('display', 'block');
+        jQuery('#ErrorMsg').html(e);
+    }
+}
+
+function displayHeaderSelection(data) {
+    // 1. display table Header
+    var da = '';
+    var keys = Object.keys(data[0]);
+    var keysL = keys.length;
+    for (i = 0; i < keysL; i++) {
+        da = da + `
+                <input id="h-${i}" class="w3-check" value="${keys[i]}" type="checkbox" name="displayColumnCheckbox">
+                <label for="h-${i}" class="w3-margin-right">${keys[i]}</label>
+            `;
+    }
+    jQuery('#displayColumnSelectionForm').empty();
+    jQuery('#displayColumnSelectionForm').append(da);
+}
+
+function displayCSVtoTable(data) {
+    // 1. display table Header
+    var tr = th = td = tdFinal = '';
+    var keys = Object.keys(data[0]);
+    var keysL = keys.length;
+    var dataL = data.length;
+    tr = '<tr>';
+    for (i = 0; i < keysL; i++) {
+        th = th + `
+            <th>${keys[i]}</th>
+        `;
+    }
+    tr = tr + th + '</tr>';
+    jQuery('#csvDisplayTable').append(tr);
+
+    // 2. Display Data in Table
+
+    for (x = 0; x < dataL; x++) {
+        td = '';
+        tr = '<tr>';
+        for (n = 0; n < keysL; n++) {
+            var keyValue = keys[n];
+            td = td + `
+                <td>${data[x][keyValue]}</td>
+            `;
+        }
+        td = td + '';
+        tr = tr + td + '</tr>';
+
+        tdFinal = tdFinal + tr;
+    }
+    jQuery('#csvDisplayTable').append(tdFinal);
+}
 
 function animateCSS(element, animationName, callback) {
     const node = document.querySelector(element)

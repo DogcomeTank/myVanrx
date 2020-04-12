@@ -89,6 +89,11 @@ function enqueue_fullcalendar() {
         wp_enqueue_script ( 'fullcalendar-timegrid-script', get_stylesheet_directory_uri() . '/inc/fullcalendar-4.3.1/packages/timegrid/main.js' );
         wp_enqueue_script ( 'fullcalendar-list-script', get_stylesheet_directory_uri() . '/inc/fullcalendar-4.3.1/packages/list/main.js' );
     }
+
+    if(is_page('process-improvement') or is_page('agile-project-management') ){
+        wp_enqueue_script ( 'process-improvement-script', get_stylesheet_directory_uri() . '/js/process-improvement.js' );
+        
+    }
 }
 
 add_action( 'wp_enqueue_scripts', 'enqueue_fullcalendar' );
